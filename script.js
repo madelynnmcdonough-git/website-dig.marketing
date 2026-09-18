@@ -1,1 +1,46 @@
-script.js
+// Mobile navigation
+
+const menuToggle = document.querySelector(".menu-toggle");
+const navLinks = document.querySelector(".nav-links");
+
+menuToggle.addEventListener("click", () => {
+    const isOpen = navLinks.classList.toggle("open");
+
+    menuToggle.setAttribute("aria-expanded", isOpen);
+});
+
+
+// Close mobile menu after selecting a link
+
+document.querySelectorAll(".nav-links a").forEach((link) => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+    });
+});
+
+
+// Subtle reveal animation as sections enter the screen
+
+const revealElements = document.querySelectorAll(
+    ".experience-item, .feature-card, .skill-group"
+);
+
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    },
+    {
+        threshold: 0.12
+    }
+);
+
+revealElements.forEach((element) => {
+    element.classList.add("reveal");
+    observer.observe(element);
+});
